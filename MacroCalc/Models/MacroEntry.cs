@@ -6,7 +6,7 @@ namespace MacroCalc.Models
     {
         public int Id { get; set; }
         public int Calorie { get; set; }
-        public int? Fat { get; set; } = int.MinValue;
+        public int? Fat { get; set; } = int.MinValue; // fix it
 
         public int? Carb { get; set; } = int.MinValue;
 
