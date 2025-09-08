@@ -1,0 +1,52 @@
+﻿@model MacroEntry
+
+
+<div class="container mt-5">
+
+    <div class="text-center mb-4">
+        <h1>Calories</h1>
+        <h3>@Model.Calorie</h3>
+    </div>
+    <div class="row text-center my-4">
+        <div class="col-4">
+            <h2>Fat</h2>
+            <h3>@Model.Fat</h3>
+        </div>
+        <div class="col-4">
+            <h2>Carb</h2>
+            <h3>@Model.Carb</h3>
+        </div>
+        <div class="col-4">
+            <h2>Protein</h2>
+            <h3>@Model.Protein</h3>
+        </div>
+    </div>
+
+    <hr />
+
+    <form asp-action="Index" asp-route-id="@Model.Id" method="post">
+        <div class="row g-3 text-center">
+
+            <div class="col-md-4">
+                <label asp-for="Fat" class="form-label"><h5>Fat</h5></label>
+                <input asp-for="Fat" value="" class="form-control mx-auto w-75" />
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Carb" class="form-label"><h5>Carb</h5></label>
+                <input asp-for="Carb" value="" class="form-control mx-auto w-75" />
+            </div>
+
+            <div class="col-md-4">
+                <label asp-for="Protein" class="form-label"><h5>Protein</h5></label>
+                <input asp-for="Protein" value="" class="form-control mx-auto w-75" />
+            </div>
+
+            <div class="col-12 mt-3">
+                <button class="btn btn-primary px-4" type="submit">Count</button>
+            </div>
+
+        </div>
+    </form>
+
+</div>
