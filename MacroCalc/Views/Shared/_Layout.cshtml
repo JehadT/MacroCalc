@@ -13,20 +13,24 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm bg-primary border-bottom box-shadow mb-3" data-bs-theme="dark">
             <div class="container-fluid">
-                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target=".navbar-collapse" aria-controls="navbarSupportedContent"
-                        aria-expanded="false" aria-label="Toggle navigation">
+                <!-- Toggler -->
+                <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarContent"
+                        aria-controls="navbarContent" aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
 
-                <!-- Logo instead of text -->
+                <!-- Logo -->
                 <a class="navbar-brand" asp-area="" asp-controller="MacroEntries" asp-action="Entry">
                     <img src="~/images/logo.svg" alt="Logo" style="height: 40px;" />
                 </a>
 
-                <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
-                    <ul class="navbar-nav flex-grow-1">
+                <div class="collapse navbar-collapse" id="navbarContent">
+                    <!-- Left side -->
+                    <ul class="navbar-nav me-auto">
                         <li class="nav-item">
-                            <a class="nav-link" asp-area="" asp-controller="MacroEntries" asp-action="NewDay">New Day</a>
+                            <form asp-controller="MacroEntries" asp-action="NewDay" method="post">
+                                <button class="nav-link" type="submit">New Day</button>
+                            </form>
                         </li>
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="MacroEntries" asp-action="EditEntry">Edit Day</a>
@@ -34,6 +38,26 @@
                         <li class="nav-item">
                             <a class="nav-link" asp-area="" asp-controller="MacroEntries" asp-action="History">History</a>
                         </li>
+                    </ul>
+
+                    <!-- Right side -->
+                    <ul class="navbar-nav ms-auto">
+                        @if (User.Identity.IsAuthenticated)
+                        {
+                            <li class="nav-item">
+                                <form asp-area="Identity" asp-page="/Account/Logout"
+                                      asp-route-returnUrl="@Url.Page("/", new { area = "" })" method="post" class="d-inline">
+                                    <button type="submit" class="nav-link">Logout</button>
+                                </form>
+                            </li>
+                            
+                        }
+                        else
+                        {
+                            <li class="nav-item">
+                                <a class="nav-link" asp-area="Identity" asp-page="/Account/Login">Login</a>
+                            </li>
+                        }
                     </ul>
                 </div>
             </div>

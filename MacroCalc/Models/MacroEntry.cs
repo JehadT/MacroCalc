@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations;
+﻿using System.ComponentModel.DataAnnotations.Schema;
+using Microsoft.AspNetCore.Identity;
 
 namespace MacroCalc.Models
 {
@@ -6,18 +7,21 @@ namespace MacroCalc.Models
     {
         public int Id { get; set; }
         public int Calorie { get; set; }
-        public int? Fat { get; set; } = int.MinValue; // fix it
+        public int Fat { get; set; }
 
-        public int? Carb { get; set; } = int.MinValue;
+        public int Carb { get; set; }
 
-        public int? Protein { get; set; } = int.MinValue;
+        public int Protein { get; set; }
 
-        [Required]
-        public DateTime Date { get; set; } = DateTime.Today;
+        public DateTime Date { get; set; } = DateTime.Now;
+        public string UserId { get; set; }
+
+        [ForeignKey(nameof(UserId))]
+        public IdentityUser User { get; set; }
 
         public void CalculateCalorie()
         {
-            Calorie = (Fat ?? 0) * 9 + (Carb ?? 0) * 4 + (Protein ?? 0) * 4;
+            Calorie = Fat * 9 + Carb * 4 + Protein * 4;
         }
     }
 }

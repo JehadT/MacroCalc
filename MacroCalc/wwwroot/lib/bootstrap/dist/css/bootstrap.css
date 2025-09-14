@@ -4277,7 +4277,6 @@ textarea.form-control-lg {
 .navbar-text {
     padding-top: .5rem;
     padding-bottom: .5rem;
-    color: var(--bs-navbar-color)
 }
 
     .navbar-text a, .navbar-text a:focus, .navbar-text a:hover {

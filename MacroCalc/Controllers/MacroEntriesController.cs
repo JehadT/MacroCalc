@@ -1,82 +1,76 @@
-﻿using MacroCalc.Data;
-using MacroCalc.Models;
+﻿using MacroCalc.Models;
+using MacroCalc.Services.Interfaces;
+using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
-using System.Diagnostics;
 
 namespace MacroCalc.Controllers
 {
+    [Authorize]
     public class MacroEntriesController : Controller
     {
-        private readonly ApplicationDbContext _db;
 
-        public MacroEntriesController(ApplicationDbContext db)
+        private readonly UserManager<IdentityUser> _userManager;
+        private readonly IMacroEntriesService _macroEntriesService;
+
+        public MacroEntriesController(
+            UserManager<IdentityUser> userManager, IMacroEntriesService macroEntriesService
+        )
         {
-            _db = db;
+            _macroEntriesService = macroEntriesService;
+            _userManager = userManager;
         }
-        public IActionResult Entry()
+
+        [HttpGet]
+        public async Task<IActionResult> Entry()
         {
-            var macroEntry = _db.MacroEntries.OrderByDescending(m => m.Id).FirstOrDefault();
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
+            {
+                return Unauthorized();
+            }
+            var macroEntry = await _macroEntriesService.GetAsyncByUserId(userId);
             return View(macroEntry);
         }
 
         [HttpPost]
-        public IActionResult Entry(MacroEntry obj)
+        public async Task<IActionResult> Entry(MacroEntry obj)
         {
-            var existingEntry = _db.MacroEntries.FirstOrDefault(m => m.Id == obj.Id);
+            await _macroEntriesService.UpdateByAddingAsync(obj);
+            return RedirectToAction("Entry");
+        }
 
-            if (existingEntry == null)
+        [HttpPost]
+        public async Task<IActionResult> NewDay()
+        {
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
             {
-                return NotFound();
+                return Unauthorized();
             }
-
-            existingEntry.Fat += obj.Fat ?? 0;
-            existingEntry.Carb += obj.Carb ?? 0;
-            existingEntry.Protein += obj.Protein ?? 0;
-
-            existingEntry.CalculateCalorie();
-
-            _db.MacroEntries.Update(existingEntry);
-            _db.SaveChanges();
-
+            await _macroEntriesService.AddAsync(userId);
             return RedirectToAction("Entry");
         }
-        public IActionResult NewDay()
+
+        [HttpGet]
+        public async Task<IActionResult> EditEntry()
         {
-            MacroEntry entry = new MacroEntry
+            var userId = _userManager.GetUserId(User);
+            if (string.IsNullOrEmpty(userId))
             {
-                Fat = 0,
-                Carb = 0,
-                Protein = 0,
-            };
-            _db.MacroEntries.Add(entry);
-            _db.SaveChanges();
-            return RedirectToAction("Entry");
-        }
-        public IActionResult EditEntry()
-        {
-            var macroEntry = _db.MacroEntries.OrderByDescending(m => m.Id).FirstOrDefault();
+                return Unauthorized();
+            }
+            var macroEntry = await _macroEntriesService.GetAsyncByUserId(userId);
             return View(macroEntry);
         }
+
         [HttpPost]
-        public IActionResult EditEntry(MacroEntry obj)
+        public async Task<IActionResult> EditEntry(MacroEntry obj)
         {
-            var existingEntry = _db.MacroEntries.FirstOrDefault(m => m.Id == obj.Id);
-
-            if (existingEntry == null)
-            {
-                return NotFound();
-            }
-
-            existingEntry.Fat = obj.Fat;
-            existingEntry.Carb = obj.Carb;
-            existingEntry.Protein = obj.Protein;
-
-            existingEntry.CalculateCalorie();
-
-            _db.MacroEntries.Update(existingEntry);
-            _db.SaveChanges();
+            await _macroEntriesService.UpdateByReplacingAsync(obj);
             return RedirectToAction("Entry", "MacroEntries");
         }
+
         public IActionResult History()
         {
             return View();
