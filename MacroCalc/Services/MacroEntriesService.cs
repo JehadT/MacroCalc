@@ -36,10 +36,6 @@ namespace MacroCalc.Services
             throw new NotImplementedException();
         }
 
-        public Task<MacroEntry> GetAsyncByEntryId(int id)
-        {
-            throw new NotImplementedException();
-        }
 
         public async Task<MacroEntry> GetAsyncByUserId(string id)
         {
