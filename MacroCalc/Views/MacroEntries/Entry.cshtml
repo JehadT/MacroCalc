@@ -75,13 +75,28 @@
 @section Scripts {
     <script src="https://cdn.jsdelivr.net/npm/sweetalert2@11"></script>
     <script>
+
+          const Toast = Swal.mixin({
+          toast: true,
+          position: "top-end",
+          showConfirmButton: false,
+          timer: 3000,
+          timerProgressBar: true,
+          didOpen: (toast) => {
+            toast.onmouseenter = Swal.stopTimer;
+            toast.onmouseleave = Swal.resumeTimer;
+          }
+        });
+
         function hangleAddingNewDay() {
             Swal.fire({
                 title: "New Day?",
                 icon: "question",
                 showCancelButton: true,
                 confirmButtonText: "Yes",
-                cancelButtonText: "Cancel"
+                cancelButtonText: "Cancel",
+                theme: "dark",
+                width: '300px'
             }).then((result) => {
                 if (result.isConfirmed) {
                     $.ajax({
@@ -92,6 +107,13 @@
                             $("#carb").text("0");
                             $("#protein").text("0");
                             $("#calories").text("0");
+                            Toast.fire({
+                                icon: "success",
+                                title: "New Day Created!",
+                                theme: "dark",
+                                width: '300px'
+
+        });
                         },
                         error: function () {
                             Swal.fire("Error!", "Something went wrong.", "error");
