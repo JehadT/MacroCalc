@@ -22,6 +22,14 @@ namespace MacroCalc.Infrastructure
             {
                 var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
                     ?? configuration.GetConnectionString("DefaultConnection");
+
+                if (connectionString != null && connectionString.StartsWith("postgresql://"))
+                {
+                    var uri = new Uri(connectionString);
+                    var userInfo = uri.UserInfo.Split(':');
+                    connectionString = $"Host={uri.Host};Port={uri.Port};Database={uri.AbsolutePath.TrimStart('/')};Username={userInfo[0]};Password={userInfo[1]}";
+                }
+
                 options.UseNpgsql(connectionString);
 
                 if (Environment.GetEnvironmentVariable("ASPNETCORE_ENVIRONMENT") == "Development")
