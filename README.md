@@ -39,7 +39,7 @@ Before you start, make sure you have:
    git clone https://github.com/JehadT/MacroCalc.git
    ```
 2. **Update your connection string:**
-Open appsettings.json and modify the connection string to match your local SQL Server instance:
+Open appsettings.json and modify the connection string to match your local PostgreSQL instance:
   ```bash
   "ConnectionStrings": {
     "DefaultConnection": "Host=localhost;Port=5432;Database=MacroCalc;Username=postgres;Password=PASSWORD"
