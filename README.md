@@ -10,7 +10,7 @@ A simple web application that helps users track and store their daily macronutri
 - Edit macro entries 
 - View and store macros by date
 - Simple and clean architecture using ASP.NET Core and EF Core
-- SQL Server integration for persistent data storage
+- PostgreSQL integration for persistent data storage
 
 ---
 
@@ -18,7 +18,7 @@ A simple web application that helps users track and store their daily macronutri
 
 - **Backend:** ASP.NET Core  
 - **ORM:** Entity Framework Core  
-- **Database:** SQL Server  
+- **Database:** PostgreSQL  
 
 ---
 
@@ -27,7 +27,7 @@ A simple web application that helps users track and store their daily macronutri
 ### 🛠️ Prerequisites
 
 Before you start, make sure you have:
-- [SQL Server](https://www.microsoft.com/en-us/sql-server/sql-server-downloads)
+- [PostgreSQL](https://www.postgresql.org/download)
 - [.NET 9 SDK](https://dotnet.microsoft.com/en-us/download/dotnet/9.0) 
 
 ---
@@ -42,7 +42,7 @@ Before you start, make sure you have:
 Open appsettings.json and modify the connection string to match your local SQL Server instance:
   ```bash
   "ConnectionStrings": {
-    "DefaultConnection": "Server=YOUR_SERVER_NAME;Database=MacroCalc;Trusted_Connection=True"
+    "DefaultConnection": "Host=localhost;Port=5432;Database=MacroCalc;Username=postgres;Password=PASSWORD"
   }
   ```
 3. **Apply database migrations:** (using Package Manager Console)
