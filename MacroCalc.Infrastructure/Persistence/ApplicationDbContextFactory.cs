@@ -16,7 +16,8 @@ namespace MacroCalc.Infrastructure.Persistence
                 .Build();
 
             var optionsBuilder = new DbContextOptionsBuilder<ApplicationDbContext>();
-            var connectionString = configuration.GetConnectionString("DefaultConnection");
+            var connectionString = Environment.GetEnvironmentVariable("DATABASE_URL")
+                ?? configuration.GetConnectionString("DefaultConnection");
 
             optionsBuilder.UseNpgsql(connectionString);
 

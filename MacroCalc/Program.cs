@@ -1,8 +1,8 @@
-using System.Threading.RateLimiting;
 using MacroCalc.Application;
 using MacroCalc.Filters;
 using MacroCalc.Infrastructure;
 using Microsoft.AspNetCore.RateLimiting;
+using System.Threading.RateLimiting;
 
 var builder = WebApplication.CreateBuilder(args);
 
@@ -43,6 +43,9 @@ builder.Services.AddRateLimiter(options =>
     };
 });
 
+var port = Environment.GetEnvironmentVariable("PORT") ?? "8080";
+builder.WebHost.UseUrls($"http://0.0.0.0:{port}");
+
 var app = builder.Build();
 
 // Configure the HTTP request pipeline.
@@ -63,5 +66,7 @@ app.UseRateLimiter();
 
 app.MapRazorPages();
 app.MapControllerRoute(name: "default", pattern: "{controller=MacroEntries}/{action=Entry}/{id?}");
+
+await app.ApplyMigrationsAsync();
 
 app.Run();
