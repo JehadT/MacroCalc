@@ -1,0 +1,12 @@
+﻿@model MacroCalc.ViewModels.ErrorViewModel;
+
+
+<div class="container mt-5">
+    <h1>Error @Model.StatusCode</h1>
+    <p>@Model.Message</p>
+
+    @if (Model.ShowRequestId)
+    {
+        <p><strong>Request ID:</strong> @Model.RequestId</p>
+    }
+</div>

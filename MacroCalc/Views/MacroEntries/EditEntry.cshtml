@@ -1,0 +1,32 @@
+﻿@model MacroCalc.ViewModels.MacroEntryViewModel;
+
+<div class="container mt-5">
+    <div class="text-center mb-4">
+        <h1>Calories</h1>
+        <h3>@Model.ReadEntry.Calorie</h3>
+    </div>
+    <form asp-action="EditEntry" method="post">
+        @Html.AntiForgeryToken()
+        <input type="hidden" asp-for="CreateEntry.Id" value="@Model.ReadEntry.Id" />
+        <div class="row text-center my-4">
+            <div class="col-4">
+                <h2>Fat</h2>
+                 <input asp-for="CreateEntry.Fat" value="@Model.ReadEntry.Fat" class="form-control mx-auto w-75 text-center" />
+            </div>
+            <div class="col-4">
+                <h2>Carb</h2>
+                 <input asp-for="CreateEntry.Carb" value="@Model.ReadEntry.Carb" class="form-control mx-auto w-75 text-center" />
+            </div>
+            <div class="col-4">
+                <h2>Protein</h2>
+                 <input asp-for="CreateEntry.Protein" value="@Model.ReadEntry.Protein" class="form-control mx-auto w-75 text-center" />
+            </div>
+        </div>
+        <hr />
+            <div class="text-center mt-3">
+                <button type="submit" class="btn btn-primary w-25">
+                    Update
+                </button>
+        </div>
+    </form>
+</div>
